@@ -7,7 +7,7 @@ This library is inspired by those projects, working with the old version of the 
 * [Android Market Python API](https://github.com/liato/android-market-api-py)
 * [Android Market Java API](http://code.google.com/p/android-market-api/)
 
-## Disclamer
+## Disclaimer
 **This is not an official API. I am not afiliated with Google in any way, and am not responsible of any damage that could be done with it. Use it at your own risk.**
 
 ## Dependencies
