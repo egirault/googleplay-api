@@ -1,0 +1,5 @@
+- Move androidId parameter to config.py.
+- Use optparse module for parsing arguments.
+- Add cli parameters to search.py and list.py to display only some columns.
+- Handle multiple output formats.
+- Handle app reviews.
