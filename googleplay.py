@@ -120,6 +120,7 @@ class GooglePlayAPI(object):
         data = data.split()
         params = {}
         for d in data:
+          if not "=" in d: continue
           k, v = d.split("=")
           params[k.strip().lower()] = v.strip()
         if "auth" in params:
