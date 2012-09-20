@@ -141,7 +141,7 @@ class GooglePlayAPI(object):
         else:
           raise e
         
-  def executeRequestApi2(self, path, datapost=None):
+  def executeRequestApi2(self, path, datapost=None, post_content_type="application/x-www-form-urlencoded; charset=UTF-8"):
   
     if(datapost is None and path in self.preFetch):
       data = self.preFetch[path]
@@ -159,7 +159,7 @@ class GooglePlayAPI(object):
                   "Host": "android.clients.google.com"}
                   
       if(datapost is not None):
-        headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
+        headers["Content-Type"] = post_content_type
         
       request = urllib2.Request("https://android.clients.google.com/fdfe/%s" % path, datapost, headers)
       data = urllib2.urlopen(request).read()
@@ -197,7 +197,18 @@ class GooglePlayAPI(object):
     path = "details?doc=%s" % urllib.quote_plus(packageName)
     message = self.executeRequestApi2(path)
     return message.payload.detailsResponse
-    
+  
+  def bulkDetails(self, packageNames):
+    """Get several apps details from a list of package names.
+    This is much more efficient than calling N times details() since it requires only one request. 
+    packageNames is a list of app ID (usually starting with 'com.')."""
+    path = "bulkDetails"
+    req = googleplay_pb2.BulkDetailsRequest()
+    req.docid.extend(packageNames)
+    data = req.SerializeToString()
+    message = self.executeRequestApi2(path, data, "application/x-protobuf")
+    return message.payload.bulkDetailsResponse    
+
   def browse(self, cat=None, ctr=None):
     """Browse categories.
     cat (category ID) and ctr (subcategory ID) are used as filters."""
