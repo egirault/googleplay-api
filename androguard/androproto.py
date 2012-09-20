@@ -109,7 +109,11 @@ def analyse_bb(bb, k, cn):
 ##############################################################
 
 if(len(sys.argv) != 2):
-  print "Usage: %s <apk>"
+  print "Usage: %s <apk>" % sys.argv[0]
+  print "Tries to recover the .proto file used by the given APK."
+  print "Works only with Micro-Protobuf apps, and has only been tested with Google Play."
+  print "For more information: http://www.segmentationfault.fr/publications/reversing-google-play-and-micro-protobuf-applications/"
+  print
   sys.exit(0)
 
 
