@@ -29,7 +29,7 @@ class RequestError(Exception):
 
 class GooglePlayAPI(object):
   """Google Play Unofficial API Class
-  Usual APIs methods are login(), search(), details(), download(), browse() and list().
+  Usual APIs methods are login(), search(), details(), bulkDetails(), download(), browse() and list().
   toStr() can be used to pretty print the result (protobuf object) of the previous methods.
   toDict() converts the result into a dict, for easier introspection.
   """
@@ -43,11 +43,9 @@ class GooglePlayAPI(object):
   authSubToken = None
   context = None
 
-  def __init__(self): # Search results may depend on the following parameters, so try to pick real ones.
+  def __init__(self, androidId): # Search results may depend on the following parameters, so try to pick real ones.
     self.preFetch = {}
-    
-    self.androidId =  "xxxxxxxxxxxxxxxx" # change me
-    
+    self.androidId = androidId
 
   def toDict(self, protoObj):
     """Converts the (protobuf) result from an API call into a dict, for easier introspection."""
@@ -207,8 +205,8 @@ class GooglePlayAPI(object):
     req.docid.extend(packageNames)
     data = req.SerializeToString()
     message = self.executeRequestApi2(path, data, "application/x-protobuf")
-    return message.payload.bulkDetailsResponse    
-
+    return message.payload.bulkDetailsResponse
+    
   def browse(self, cat=None, ctr=None):
     """Browse categories.
     cat (category ID) and ctr (subcategory ID) are used as filters."""

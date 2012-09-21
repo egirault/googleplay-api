@@ -12,13 +12,13 @@ import urlparse
 
 
 if(len(sys.argv) < 2):
-  print "Usage: %s packagename1 [packagename2 [...]]"
+  print "Usage: %s packagename1 [packagename2 [...]]" % sys.argv[0]
   print "Display permissions required to install the specified app(s)."
   sys.exit(0)
   
 packagenames = sys.argv[1:]
 
-api = GooglePlayAPI()
+api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 
 # Only one app

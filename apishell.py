@@ -17,6 +17,6 @@ import sys
 import urlparse
 import code
 
-api = GooglePlayAPI()
+api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 code.interact(BANNER, local=locals())

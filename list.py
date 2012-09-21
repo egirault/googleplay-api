@@ -63,7 +63,7 @@ if(len(sys.argv) >= 4):
 if(len(sys.argv) == 5):
   offset = sys.argv[4]
 
-api = GooglePlayAPI()
+api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 try:
   message = api.list(cat, ctr, nb_results, offset)

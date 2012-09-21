@@ -60,7 +60,7 @@ if(len(sys.argv) >= 3):
 if(len(sys.argv) >= 4):
   offset = int(sys.argv[3])
 
-api = GooglePlayAPI()
+api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 
 try:

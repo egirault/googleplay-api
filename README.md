@@ -15,13 +15,13 @@ This library is inspired by those projects, working with the old version of the 
 * [Protocol Buffers](http://code.google.com/p/protobuf/)
 
 ## Requirements
-You must first edit `googleplay.py` in order to set your phone's `androidID`:
+You must edit `config.py` before using the provided scripts (`search.py`, `download.py`, `apishell.py`, etc.). First, you need to provide your phone's `androidID`:
 
-	self.androidId =  "xxxxxxxxxxxxxxxx" # change me
+    ANDROID_ID = "xxxxxxxxxxxxxxxx"   # edit me
 
 To get your `androidID`, use `*#*#8255#*#*` on your phone to start *Gtalk Monitor*. The hex string listed after `aid` is your `androidID`.
 
-You must edit `config.py` before using the provided scripts (`search.py`, `download.py`, `apishell.py`, etc.),  In order to authenticate to Google Play, you need to provide either your Google login and password, or a valid subAuthToken.
+In order to authenticate to Google Play, you also need to provide either your Google login and password, or a valid subAuthToken.
 
 ## Usage
 
@@ -54,7 +54,7 @@ By default, all scripts have CSV output. You can use Linux's `column` to prettif
     Super Earth Wallpaper Free      com.mx.spacelwpfree                     Mariux                   0          Gratuit  1           2             1.8MB    4.41    100 000+
     Earth And Legend                com.dvidearts.earthandlegend            DVide Arts Incorporated  0          5,99 €   1           6             6.8MB    4.82    50 000+
     Earth 3D                        com.jmsys.earth3d                       Dokon Jang               0          Gratuit  1           12            3.4MB    4.05    500 000+
-	[...]
+    [...]
 
 ### Browse categories
 
@@ -118,7 +118,9 @@ You can use `permissions.py` to see what permissions are required by an app with
     android.permission.READ_SYNC_SETTINGS
     android.permission.READ_SYNC_STATS
     android.permission.RECEIVE_BOOT_COMPLETED
-	[...]
+    [...]
+
+You can specify multiple apps, using only one request.
 
 ### Downloading apps
 
@@ -166,11 +168,11 @@ All results returned by methods such as `search()`, `details()`, ..., are Protob
     >>> d = api.toDict(s)
     >>> d.keys()
     ['promoUrl', 'category', 'contentsUrl']
-	>>> from pprint import pprint
-	>>> pprint(d['category'])
-	[{'dataUrl': u'browse?c=3&cat=GAME', 'name': u'Jeux'},
-	 {'dataUrl': u'browse?c=3&cat=NEWS_AND_MAGAZINES',
-	[...]
+    >>> from pprint import pprint
+    >>> pprint(d['category'])
+    [{'dataUrl': u'browse?c=3&cat=GAME', 'name': u'Jeux'},
+     {'dataUrl': u'browse?c=3&cat=NEWS_AND_MAGAZINES',
+    [...]
 
 ### Using the API as a module in another project
 
@@ -197,3 +199,4 @@ You can generate Protobuf stubs from `googleplay.proto` file with Google's `prot
 ## License
 
 This project is released under the BSD license.
+

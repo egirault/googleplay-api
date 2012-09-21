@@ -10,7 +10,7 @@ from google.protobuf import text_format
 import sys
 import urlparse
 
-api = GooglePlayAPI()
+api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 response = api.browse()
 
