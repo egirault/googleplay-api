@@ -8,21 +8,7 @@ from pprint import pprint
 
 from config import *
 from googleplay import GooglePlayAPI
-from helpers import sizeof_fmt
-
-def print_header_line():
-    l = [ "Title",
-                "Package name",
-                "Creator",
-                "Super Dev",
-                "Price",
-                "Offer Type",
-                "Version Code",
-                "Size",
-                "Rating",
-                "Num Downloads",
-             ]
-    print SEPARATOR.join(l)
+from helpers import sizeof_fmt, print_header_line
 
 def print_result_line(c):
     #c.offer[0].micros/1000000.0
