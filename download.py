@@ -28,14 +28,10 @@ api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
 
 # Get the version code and the offer type from the app details
-try:
-    m = api.details(packagename)
-    doc = m.docV2
-    vc = doc.details.appDetails.versionCode
-    ot = doc.offer[0].offerType
-except:
-    print "Unable to get details from this package name. Are you sure it is correct?"
-    sys.exit(1)
+m = api.details(packagename)
+doc = m.docV2
+vc = doc.details.appDetails.versionCode
+ot = doc.offer[0].offerType
 
 # Download
 print "Downloading %s..." % sizeof_fmt(doc.details.appDetails.installationSize),
