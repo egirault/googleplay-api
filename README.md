@@ -128,7 +128,7 @@ Downloading an app is really easy, just provide its package name. I only tested 
 
     $ python download.py com.google.android.gm
     Downloading 2.7MB... Done
-    
+
     $ file com.google.android.gm.apk
     com.google.android.gm.apk: Zip archive data, at least v2.0 to extract
 
