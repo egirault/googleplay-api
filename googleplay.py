@@ -47,12 +47,14 @@ class GooglePlayAPI(object):
     authSubToken = None
     context = None
 
-    def __init__(self, androidId): # Search results may depend on the following parameters, so try to pick real ones.
+    def __init__(self, androidId, debug=True): # you must use a device-associated androidId value
         self.preFetch = {}
         self.androidId = androidId
+        self.debug = debug
 
     def toDict(self, protoObj):
-        """Converts the (protobuf) result from an API call into a dict, for easier introspection."""
+        """Converts the (protobuf) result from an API call into a dict, for
+        easier introspection."""
         iterable = False
         if isinstance(protoObj, RepeatedCompositeFieldContainer):
             iterable = True
@@ -63,7 +65,7 @@ class GooglePlayAPI(object):
         for po in protoObj:
             msg = dict()
             for fielddesc, value in po.ListFields():
-                #print value, type(value), getattr(value, '__iter__', False)
+                #print value, type(value), getattr(value, "__iter__", False)
                 if fielddesc.type == descriptor.FieldDescriptor.TYPE_GROUP or isinstance(value, RepeatedCompositeFieldContainer) or isinstance(value, google.protobuf.message.Message):
                     msg[fielddesc.name] = self.toDict(value)
                 else:
@@ -89,14 +91,14 @@ class GooglePlayAPI(object):
     def setAuthSubToken(self, authSubToken):
         self.authSubToken = authSubToken
 
-        # Uncomment this line to print your auth token, and put it in config.py for faster access
-        # print authSubToken
+        # put your auth token in config.py to avoid multiple login requests
+        if self.debug:
+            print "authSubToken: " + authSubToken
 
-    def login(self, email=None, password=None, authSubToken = None):
+    def login(self, email=None, password=None, authSubToken=None):
         """Login to your Google Account. You must provide either:
         - an email and password
-        - a valid Google authSubToken
-        """
+        - a valid Google authSubToken"""
         if (authSubToken is not None):
             self.setAuthSubToken(authSubToken)
         else:
@@ -142,7 +144,6 @@ class GooglePlayAPI(object):
                     raise e
 
     def executeRequestApi2(self, path, datapost=None, post_content_type="application/x-www-form-urlencoded; charset=UTF-8"):
-
         if (datapost is None and path in self.preFetch):
             data = self.preFetch[path]
         else:
@@ -242,8 +243,9 @@ class GooglePlayAPI(object):
         """Download an app and return its raw data (APK file).
 
         packageName is the app unique ID (usually starting with 'com.').
-        versionCode can be grabbed by using the details() method on the given app."""
 
+        versionCode can be grabbed by using the details() method on the given
+        app."""
         path = "purchase"
         data = "ot=%d&doc=%s&vc=%d" % (offerType, packageName, versionCode)
         message = self.executeRequestApi2(path, data)
