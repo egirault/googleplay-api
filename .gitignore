@@ -4,3 +4,6 @@
 # ignore editor leftovers
 *~
 .*.sw*
+
+# ignore downloaded apps
+*.apk
