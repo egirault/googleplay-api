@@ -17,7 +17,7 @@ This library is inspired by those projects, working with the old version of the 
 ## Requirements
 You must edit `config.py` before using the provided scripts (`search.py`, `download.py`, `apishell.py`, etc.). First, you need to provide your phone's `androidID`:
 
-    ANDROID_ID = "xxxxxxxxxxxxxxxx"   # edit me
+    ANDROID_ID      = None # "xxxxxxxxxxxxxxxx"
 
 To get your `androidID`, use `*#*#8255#*#*` on your phone to start *Gtalk Monitor*. The hex string listed after `aid` is your `androidID`.
 
