@@ -1,20 +1,14 @@
 #!/usr/bin/python
 
-######################
-# Configuration file #
-######################
-
-# Separator used by search.py, categories.py, ...
+# separator used by search.py, categories.py, ...
 SEPARATOR = ";"
 
-# Your Android ID
-ANDROID_ID = "xxxxxxxxxxxxxxxx"   # edit me
+ANDROID_ID      = None # "xxxxxxxxxxxxxxxx"
+GOOGLE_LOGIN    = None # "username@gmail.com"
+GOOGLE_PASSWORD = None
+AUTH_TOKEN      = None # "yyyyyyyyy"
 
-# Google credentials
-GOOGLE_LOGIN = "xxxxxx@gmail.com"
-GOOGLE_PASSWORD = "xxxxxx"
-
-
-# Google Auth Token for easier access
-# AUTH_TOKEN = "yyyyyyyyy"
+# force the user to edit this file
+if any([each == None for each in [ANDROID_ID, GOOGLE_LOGIN, GOOGLE_PASSWORD]]):
+    raise Exception("config.py not updated")
 
