@@ -27,7 +27,7 @@ In order to authenticate to Google Play, you also need to provide either your Go
 
 ### Searching
 
-    $ python search.py 
+    $ python search.py
     Usage: search.py request [nb_results] [offset]
     Search for an app.
     If request contains a space, don't forget to surround it with ""
@@ -39,7 +39,7 @@ In order to authenticate to Google Play, you also need to provide either your Go
     Earth Live Wallpaper;com.seb.SLWP;unixseb;0;Gratuit;1;60;687.4KB;4.06;5 000 000+
     Super Earth Wallpaper Free;com.mx.spacelwpfree;Mariux;0;Gratuit;1;2;1.8MB;4.41;100 000+
     Earth And Legend;com.dvidearts.earthandlegend;DVide Arts Incorporated;0;5,99 €;1;6;6.8MB;4.82;50 000+
-	[...]
+    [...]
 
 Depending on the number of results you ask, you might get an error. My tests show that 100 search results are the maximum, but it may vary.
 
@@ -77,7 +77,7 @@ Sorry for non-French speakers!
 
 All categories have subcategories. You can list them with:
 
-    $ python list.py 
+    $ python list.py
     Usage: list.py category [subcategory] [nb_results] [offset]
     List subcategories and apps within them.
     category: To obtain a list of supported catagories, use categories.py
@@ -104,7 +104,7 @@ And then list apps within them:
 
 You can use `permissions.py` to see what permissions are required by an app without downloading it:
 
-    $ python search.py gmail 1 | pp 
+    $ python search.py gmail 1 | pp
     Titre  Package name           Creator      Super Dev  Price    Offer Type  Version Code  Size   Rating  Num Downloads
     Gmail  com.google.android.gm  Google Inc.  1          Gratuit  1           403           2.7MB  4.32    100 000 000+
 
@@ -126,11 +126,11 @@ You can specify multiple apps, using only one request.
 
 Downloading an app is really easy, just provide its package name. I only tested with free apps, but I guess it should work as well with non-free as soon as you have enough money on your Google account.
 
-	$ python download.py com.google.android.gm
-	Downloading 2.7MB... Done
-	
-	$ file com.google.android.gm.apk 
-	com.google.android.gm.apk: Zip archive data, at least v2.0 to extract
+    $ python download.py com.google.android.gm
+    Downloading 2.7MB... Done
+    
+    $ file com.google.android.gm.apk
+    com.google.android.gm.apk: Zip archive data, at least v2.0 to extract
 
 ### Interactive shell
 An interactive shell can be started using the `apishell.py` script. It initializes the `api` object and logs you in.
@@ -178,8 +178,8 @@ All results returned by methods such as `search()`, `details()`, ..., are Protob
 
 You only need `googleplay.py` and `googleplay_pb2.py`. All other scripts are just front-ends.
 
-	>>> from googleplay import GooglePlayAPI
-	>>> help(GooglePlayAPI)
+    >>> from googleplay import GooglePlayAPI
+    >>> help(GooglePlayAPI)
 
 What else?
 
