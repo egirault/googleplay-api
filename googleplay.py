@@ -4,8 +4,7 @@ import base64
 import gzip
 import pprint
 import StringIO
-import urllib
-import urllib2
+import requests
 
 from google.protobuf import descriptor
 from google.protobuf.internal.containers import RepeatedCompositeFieldContainer
@@ -117,53 +116,49 @@ class GooglePlayAPI(object):
                                 "operatorCountry": "fr",
                                 "lang": "fr",
                                 "sdk_version": "16"}
-            try:
-                data = urllib2.urlopen(self.URL_LOGIN, urllib.urlencode(params)).read()
-                data = data.split()
-                params = {}
-                for d in data:
-                    if not "=" in d: continue
-                    k, v = d.split("=")
-                    params[k.strip().lower()] = v.strip()
-                if "auth" in params:
-                    self.setAuthSubToken(params["auth"])
-                else:
-                    raise LoginError("Auth token not found.")
-            except urllib2.HTTPError, e:
-                if e.code == 403:
-                    data = e.fp.read().split()
-                    params = {}
-                    for d in data:
-                        k, v = d.split("=", 1)
-                        params[k.strip().lower()] = v.strip()
-                    if "error" in params:
-                        raise LoginError(params["error"])
-                    else:
-                        raise LoginError("Login failed.")
-                else:
-                    raise e
+            headers = {
+                "Accept-Encoding": "",
+            }
+            response = requests.post(self.URL_LOGIN, data=params, headers=headers, verify=False)
+            data = response.text.split()
+            params = {}
+            for d in data:
+                if not "=" in d: continue
+                k, v = d.split("=")
+                params[k.strip().lower()] = v.strip()
+            if "auth" in params:
+                self.setAuthSubToken(params["auth"])
+            elif "error" in params:
+                raise LoginError("server says: " + params["error"])
+            else:
+                raise LoginError("Auth token not found.")
 
     def executeRequestApi2(self, path, datapost=None, post_content_type="application/x-www-form-urlencoded; charset=UTF-8"):
         if (datapost is None and path in self.preFetch):
             data = self.preFetch[path]
         else:
-            headers = { "Accept-Language": "fr-FR",
+            headers = { "Accept-Language": "en_US",
                                     "Authorization": "GoogleLogin auth=%s" % self.authSubToken,
                                     "X-DFE-Enabled-Experiments": "cl:billing.select_add_instrument_by_default",
                                     "X-DFE-Unsupported-Experiments": "nocache:billing.use_charging_poller,market_emails,buyer_currency,prod_baseline,checkin.set_asset_paid_app_field,shekel_test,content_ratings,buyer_currency_in_app,nocache:encrypted_apk,recent_changes",
                                     "X-DFE-Device-Id": self.androidId,
                                     "X-DFE-Client-Id": "am-android-google",
-                                    #"X-DFE-Logging-Id": self.loggingId2,             # Deprecated?
+                                    #"X-DFE-Logging-Id": self.loggingId2, # Deprecated?
                                     "User-Agent": "Android-Finsky/3.7.13 (api=3,versionCode=8013013,sdk=16,device=crespo,hardware=herring,product=soju)",
                                     "X-DFE-SmallestScreenWidthDp": "320",
                                     "X-DFE-Filter-Level": "3",
+                                    "Accept-Encoding": "",
                                     "Host": "android.clients.google.com"}
 
-            if (datapost is not None):
+            if datapost is not None:
                 headers["Content-Type"] = post_content_type
 
-            request = urllib2.Request("https://android.clients.google.com/fdfe/%s" % path, datapost, headers)
-            data = urllib2.urlopen(request).read()
+            url = "https://android.clients.google.com/fdfe/%s" % path
+            if datapost is not None:
+                response = requests.post(url, data=datapost, headers=headers, verify=False)
+            else:
+                response = requests.get(url, headers=headers, verify=False)
+            data = response.content
 
         '''
         data = StringIO.StringIO(data)
@@ -183,7 +178,7 @@ class GooglePlayAPI(object):
 
     def search(self, query, nb_results=None, offset=None):
         """Search for apps."""
-        path = "search?c=3&q=%s" % urllib.quote_plus(query)     # TODO handle categories
+        path = "search?c=3&q=%s" % requests.utils.quote(query) # TODO handle categories
         if (nb_results is not None):
             path += "&n=%d" % int(nb_results)
         if (offset is not None):
@@ -195,7 +190,7 @@ class GooglePlayAPI(object):
     def details(self, packageName):
         """Get app details from a package name.
         packageName is the app unique ID (usually starting with 'com.')."""
-        path = "details?doc=%s" % urllib.quote_plus(packageName)
+        path = "details?doc=%s" % requests.utils.quote(packageName)
         message = self.executeRequestApi2(path)
         return message.payload.detailsResponse
 
@@ -218,9 +213,9 @@ class GooglePlayAPI(object):
         cat (category ID) and ctr (subcategory ID) are used as filters."""
         path = "browse?c=3"
         if (cat != None):
-            path += "&cat=%s" % urllib.quote_plus(cat)
+            path += "&cat=%s" % requests.utils.quote(cat)
         if (ctr != None):
-            path += "&ctr=%s" % urllib.quote_plus(ctr)
+            path += "&ctr=%s" % requests.utils.quote(ctr)
         message = self.executeRequestApi2(path)
         return message.payload.browseResponse
 
@@ -230,13 +225,13 @@ class GooglePlayAPI(object):
         If ctr (subcategory ID) is None, returns a list of valid subcategories.
 
         If ctr is provided, list apps within this subcategory."""
-        path = "list?c=3&cat=%s" % urllib.quote_plus(cat)
+        path = "list?c=3&cat=%s" % requests.utls.quote(cat)
         if (ctr != None):
-            path += "&ctr=%s" % urllib.quote_plus(ctr)
+            path += "&ctr=%s" % requests.utils.quote(ctr)
         if (nb_results != None):
-            path += "&n=%s" % urllib.quote_plus(nb_results)
+            path += "&n=%s" % requests.utils.quote(nb_results)
         if (offset != None):
-            path += "&o=%s" % urllib.quote_plus(offset)
+            path += "&o=%s" % requests.utils.quote(offset)
         message = self.executeRequestApi2(path)
         return message.payload.listResponse
 
@@ -255,8 +250,9 @@ class GooglePlayAPI(object):
         cookie = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadAuthCookie[0]
 
         headers = {"Cookie" : "%s=%s" % (cookie.name, cookie.value),
-                             "User-Agent" : "AndroidDownloadManager/4.1.1 (Linux; U; Android 4.1.1; Nexus S Build/JRO03E)"}
-        request = urllib2.Request(url, None, headers)
-        data = urllib2.urlopen(request).read()
-        return data
+                   "User-Agent" : "AndroidDownloadManager/4.1.1 (Linux; U; Android 4.1.1; Nexus S Build/JRO03E)",
+                   "Accept-Encoding": "",
+                  }
+        response = requests.get(url, headers=headers) # TODO might be POST ?
+        return response.content
 
