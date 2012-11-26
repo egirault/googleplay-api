@@ -251,10 +251,15 @@ class GooglePlayAPI(object):
         url = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadUrl
         cookie = message.payload.buyResponse.purchaseStatusResponse.appDeliveryData.downloadAuthCookie[0]
 
-        headers = {"Cookie" : "%s=%s" % (cookie.name, cookie.value),
+        cookies = {
+            str(cookie.name): str(cookie.value) # python-requests #459 fixes this
+        }
+
+        headers = {
                    "User-Agent" : "AndroidDownloadManager/4.1.1 (Linux; U; Android 4.1.1; Nexus S Build/JRO03E)",
                    "Accept-Encoding": "",
                   }
-        response = requests.get(url, headers=headers) # TODO might be POST ?
+
+        response = requests.get(url, headers=headers, cookies=cookies, verify=False)
         return response.content
 
