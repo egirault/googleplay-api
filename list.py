@@ -8,22 +8,7 @@ from pprint import pprint
 
 from config import *
 from googleplay import GooglePlayAPI
-from helpers import sizeof_fmt, print_header_line
-
-def print_result_line(c):
-    #c.offer[0].micros/1000000.0
-    #c.offer[0].currencyCode
-    l = [ c.title,
-                c.docid,
-                c.creator,
-                len(c.annotations.badgeForCreator), # Is Super Developer?
-                c.offer[0].formattedAmount,
-                c.offer[0].offerType,
-                c.details.appDetails.versionCode,
-                sizeof_fmt(c.details.appDetails.installationSize),
-                "%.2f" % c.aggregateRating.starRating,
-                c.details.appDetails.numDownloads]
-    print SEPARATOR.join(unicode(i).encode('utf8') for i in l)
+from helpers import sizeof_fmt, print_header_line, print_result_line
 
 if (len(sys.argv) < 2):
     print "Usage: %s category [subcategory] [nb_results] [offset]" % sys.argv[0]
