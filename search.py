@@ -8,6 +8,7 @@ from pprint import pprint
 
 from config import *
 from googleplay import GooglePlayAPI
+from helpers import sizeof_fmt
 
 def print_header_line():
     l = [ "Title",
@@ -22,12 +23,6 @@ def print_header_line():
                 "Num Downloads",
              ]
     print SEPARATOR.join(l)
-
-def sizeof_fmt(num):
-    for x in ['bytes','KB','MB','GB','TB']:
-        if num < 1024.0:
-            return "%3.1f%s" % (num, x)
-        num /= 1024.0
 
 def print_result_line(c):
     #c.offer[0].micros/1000000.0

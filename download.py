@@ -8,12 +8,7 @@ from pprint import pprint
 
 from config import *
 from googleplay import GooglePlayAPI
-
-def sizeof_fmt(num):
-    for x in ['bytes','KB','MB','GB','TB']:
-        if num < 1024.0:
-            return "%3.1f%s" % (num, x)
-        num /= 1024.0
+from helpers import sizeof_fmt
 
 if (len(sys.argv) < 2):
     print "Usage: %s packagename [filename]"
