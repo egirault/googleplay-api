@@ -1,0 +1,6 @@
+# ignore precompiled python files
+*.pyc
+
+# ignore editor leftovers
+*~
+.*.sw*
