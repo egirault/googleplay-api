@@ -9,13 +9,14 @@ Successfully logged in using your Google account. The variable 'api' holds the A
 Feel free to use help(api).
 """
 
-from googleplay import GooglePlayAPI
-from google.protobuf import text_format
-from config import *
-from pprint import pprint
 import sys
 import urlparse
 import code
+from pprint import pprint
+from google.protobuf import text_format
+
+from config import *
+from googleplay import GooglePlayAPI
 
 api = GooglePlayAPI(ANDROID_ID)
 api.login(GOOGLE_LOGIN, GOOGLE_PASSWORD, AUTH_TOKEN)
