@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # separator used by search.py, categories.py, ...
 SEPARATOR = ";"
 
