@@ -12,6 +12,7 @@ from google.protobuf import text_format
 from google.protobuf.message import Message, DecodeError
 
 import googleplay_pb2
+import config
 
 class LoginError(Exception):
     def __init__(self, value):
@@ -45,8 +46,10 @@ class GooglePlayAPI(object):
     authSubToken = None
     context = None
 
-    def __init__(self, androidId, debug=True): # you must use a device-associated androidId value
+    def __init__(self, androidId=None, debug=True): # you must use a device-associated androidId value
         self.preFetch = {}
+        if androidId == None:
+            androidId = config.ANDROID_ID
         self.androidId = androidId
         self.debug = debug
 
