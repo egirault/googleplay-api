@@ -226,6 +226,7 @@ class GooglePlayAPI(object):
 
     def list(self, cat, ctr=None, nb_results=None, offset=None):
         """List apps.
+
         If ctr (subcategory ID) is None, returns a list of valid subcategories.
 
         If ctr is provided, list apps within this subcategory."""
