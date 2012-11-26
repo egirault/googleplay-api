@@ -8,9 +8,8 @@ import requests
 
 from google.protobuf import descriptor
 from google.protobuf.internal.containers import RepeatedCompositeFieldContainer
-import google.protobuf.message
 from google.protobuf import text_format
-from google.protobuf.message import DecodeError
+from google.protobuf.message import Message, DecodeError
 
 import googleplay_pb2
 
@@ -65,7 +64,7 @@ class GooglePlayAPI(object):
             msg = dict()
             for fielddesc, value in po.ListFields():
                 #print value, type(value), getattr(value, "__iter__", False)
-                if fielddesc.type == descriptor.FieldDescriptor.TYPE_GROUP or isinstance(value, RepeatedCompositeFieldContainer) or isinstance(value, google.protobuf.message.Message):
+                if fielddesc.type == descriptor.FieldDescriptor.TYPE_GROUP or isinstance(value, RepeatedCompositeFieldContainer) or isinstance(value, Message):
                     msg[fielddesc.name] = self.toDict(value)
                 else:
                     msg[fielddesc.name] = value
