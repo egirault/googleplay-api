@@ -46,7 +46,7 @@ class GooglePlayAPI(object):
     authSubToken = None
     context = None
 
-    def __init__(self, androidId=None, debug=True): # you must use a device-associated androidId value
+    def __init__(self, androidId=None, debug=False): # you must use a device-associated androidId value
         self.preFetch = {}
         if androidId == None:
             androidId = config.ANDROID_ID
@@ -227,7 +227,7 @@ class GooglePlayAPI(object):
         If ctr (subcategory ID) is None, returns a list of valid subcategories.
 
         If ctr is provided, list apps within this subcategory."""
-        path = "list?c=3&cat=%s" % requests.utls.quote(cat)
+        path = "list?c=3&cat=%s" % requests.utils.quote(cat)
         if (ctr != None):
             path += "&ctr=%s" % requests.utils.quote(ctr)
         if (nb_results != None):
