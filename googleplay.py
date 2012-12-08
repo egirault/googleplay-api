@@ -42,15 +42,16 @@ class GooglePlayAPI(object):
     ACCOUNT_TYPE_GOOGLE = "GOOGLE"
     ACCOUNT_TYPE_HOSTED = "HOSTED"
     ACCOUNT_TYPE_HOSTED_OR_GOOGLE = "HOSTED_OR_GOOGLE"
-    PROTOCOL_VERSION = 2
     authSubToken = None
-    context = None
 
-    def __init__(self, androidId=None, debug=False): # you must use a device-associated androidId value
+    def __init__(self, androidId=None, lang=None, debug=False): # you must use a device-associated androidId value
         self.preFetch = {}
         if androidId == None:
             androidId = config.ANDROID_ID
+        if lang == None:
+            lang = config.LANG
         self.androidId = androidId
+        self.lang = lang
         self.debug = debug
 
     def toDict(self, protoObj):
@@ -139,7 +140,7 @@ class GooglePlayAPI(object):
         if (datapost is None and path in self.preFetch):
             data = self.preFetch[path]
         else:
-            headers = { "Accept-Language": "en_US",
+            headers = { "Accept-Language": self.lang,
                                     "Authorization": "GoogleLogin auth=%s" % self.authSubToken,
                                     "X-DFE-Enabled-Experiments": "cl:billing.select_add_instrument_by_default",
                                     "X-DFE-Unsupported-Experiments": "nocache:billing.use_charging_poller,market_emails,buyer_currency,prod_baseline,checkin.set_asset_paid_app_field,shekel_test,content_ratings,buyer_currency_in_app,nocache:encrypted_apk,recent_changes",
