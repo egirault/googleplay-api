@@ -30,7 +30,7 @@ class GooglePlayAPI(object):
     """Google Play Unofficial API Class
 
     Usual APIs methods are login(), search(), details(), bulkDetails(),
-    download(), browse() and list().
+    download(), browse(), reviews() and list().
 
     toStr() can be used to pretty print the result (protobuf object) of the
     previous methods.
@@ -236,7 +236,21 @@ class GooglePlayAPI(object):
             path += "&o=%s" % requests.utils.quote(offset)
         message = self.executeRequestApi2(path)
         return message.payload.listResponse
-
+    
+    def reviews(self, packageName, filterByDevice=False, sort=2, nb_results=None, offset=None):
+        """Browse reviews.
+        packageName is the app unique ID.
+        If filterByDevice is True, return only reviews for your device."""
+        path = "rev?doc=%s&sort=%d" % (requests.utils.quote(packageName), sort)
+        if (nb_results is not None):
+            path += "&n=%d" % int(nb_results)
+        if (offset is not None):
+            path += "&o=%d" % int(offset)
+        if(filterByDevice):
+            path += "&dfil=1"
+        message = self.executeRequestApi2(path)
+        return message.payload.reviewResponse
+    
     def download(self, packageName, versionCode, offerType=1):
         """Download an app and return its raw data (APK file).
 
